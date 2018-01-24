@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ремонты</title>
+</head>
+<body>
+    <a href="{{ url_for('list') }}">Главная</a>
+    <a href="{{ url_for('add') }}">Добавить заявку</a>
+    <a href="{{ url_for('getticket') }}">Редактировать заявку</a><p>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% block content %} {% endblock %}
+</body>
+</html>

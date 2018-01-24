@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+    <form method="post">
+        Редактировать заявку:
+        <input type="number" name="hotlineticket" value="{{ticket.hotlineticket }}">
+        <select name="aktco7mode">
+            {% for mode in listmode %}
+                <option value="{{ mode.val }}">{{ mode.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="date" name="aktco7date" value="{{ticket.aktco7date }}">
+        <input type="date" name="aktco8changedate" value="{{ticket.aktco8changedate }}">
+        <input type="date" name="aktco8date" value="{{ticket.aktco8date }}">
+        <input type="date" name="serviceproviderdate" value="{{ticket.serviceproviderdate }}">
+        <input type="date" name="locationdate" value="{{ticket.locationdate }}">
+        <input type="text" name="name" value="{{ticket.name }}">
+        <input type="text" name="inventnumder" value="{{ticket.inventnumder }}">
+        <input type="text" name="serialnumber" value="{{ticket.serialnumber }}">
+        <input type="number" name="serviceticket" value="{{ticket.serviceticket }}">
+        <input type="number" name="serviceakt" value="{{ticket.serviceakt }}">
+        <input type="number" name="serviceprice" value="{{ticket.serviceprice }}">
+        <input type="text" name="remark" value="{{ticket.remark }}">
+         <p><input type="submit" name="addticket" value="Редактировать">
+    </form>
+{% endblock %}

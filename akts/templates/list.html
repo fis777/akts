@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+    <table border="1px grey" width="120%">
+    <tr><th>№ заявки</th><th>№ заявки ГЛ</th>
+        <th>СО-7</th><th>СО-7 изменен</th><th>дата СО-7</th><th>СО-8</th><th>СО-8 изменен</th><th>СО-8 дата</th>
+        <th>СО-4.1</th><th>СО-4.2</th><th>Суд</th><th>Сервис</th><th>Дата</th><th>Где ПТС</th><th>Дата</th><th>Нименование ПТС</th>
+        <th>Инвентарный</th><th>Серийный</th><th>Примечание</th></tr>
+    {% for l in list %}
+        <tr> <td>{{ l.localticket }}</td>
+            <td>{{ l.hotlineticket }}</td>
+            <td>{{ l.aktco7modename }}</td>
+            <td>{{ l.aktco7changedate }}</td>
+            <td>{{ l.aktco7date }}</td>
+            <td>{{ l.aktco8modename }}</td>
+            <td>{{ l.aktco8changedate }}</td>
+            <td>{{ l.aktco8date }}</td>
+            <td>{{ l.aktco41modename }}</td>
+            <td>{{ l.aktco42modename }}</td>
+            <td>{{ l.lowcourtname }}</td>
+            <td>{{ l.serviceprovidername }}</td>
+            <td>{{ l.serviceproviderdate }}</td>
+            <td>{{ l.locationname }}</td>
+            <td>{{ l.locationdate }}</td>
+            <td>{{ l.name }}</td>
+            <td>{{ l.inventnumder }}</td>
+            <td>{{ l.serialnumber }}</td>
+            <td>{{ l.remark }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
