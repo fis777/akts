@@ -51,16 +51,31 @@ def add():
 
 @app.route('/edit/<local>', methods=['GET', 'POST'])
 def edit(local):
-    actmode = models.ActMode()
+    listlocation = [{'val': location.id, 'name' : location.name} for location in models.Location.query.all()]
     listmode = [{'val': actmode.id, 'name' : actmode.name} for actmode in models.ActMode.query.all()]
+    listprovider = [{'val': provider.id, 'name' : provider.name} for provider in models.ServiceProvider.query.all()]
+    listlow = [{'val': low.code, 'name' : low.name} for low in models.LowCourt.query.all()]
     ticket = models.Tickets.query.filter_by(localticket = local).first()
     if request.method == 'POST':
-        ticket.hotlineticket = request.form['hotlineticket']
         ticket.aktco7mode = request.form.get('aktco7mode')
         ticket.aktco7date = strToDate(request.form['aktco7date'])
+        ticket.aktco41mode = request.form.get('aktco41mode')
+        ticket.aktco8mode = request.form.get('aktco8mode')
+        ticket.aktco8date = strToDate(request.form['aktco8date'])
+        ticket.aktco42mode = request.form.get('aktco42mode')
+#        ticket.lowcourtcode = request.form.get('lowcourtcode')
+        ticket.serviceprovider = request.form.get('serviceprovider')
+        ticket.location = request.form.get('location')
+        ticket.name = request.form['name']
+#        ticket.inventnumder = request.form['inventnumder']
+#        ticket.serialnumber = request.form['serialnumber']
+        ticket.serviceticket = int(request.form['serviceticket'])
+        ticket.serviceakt = int(request.form['serviceakt'])
+        ticket.serviceprice = float(request.form['serviceprice'])
+#        ticket.remark = request.form['remark']
         db.session.commit()
         return redirect(url_for('list'))
-    return render_template("edit.html",ticket = ticket,listmode = listmode)
+    return render_template("edit.html",ticket = ticket,listmode = listmode,listlow = listlow,listprovider = listprovider,listlocation = listlocation)
 
 @app.route('/getticket', methods=['GET', 'POST'])
 def getticket():
@@ -69,6 +84,7 @@ def getticket():
         return redirect(url_for('edit', local = localticket))
     return render_template("get_ticket_for_edit.html")
 
+@app.route('/')
 @app.route('/list')
 def list():
     list = [{'localticket' : x.localticket,

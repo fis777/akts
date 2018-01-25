@@ -27,9 +27,9 @@ class Fbticket():
              'name' : '',
              'inventnumder': '',
              'serialnumber': '',
-             'serviceticket' : None,
-             'serviceakt' : None,
-             'serviceprice' : None,
+             'serviceticket' : 0,
+             'serviceakt' : 0,
+             'serviceprice' : 0,
              'remark': ''
              }
 

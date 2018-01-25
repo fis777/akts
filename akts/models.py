@@ -31,7 +31,7 @@ class Tickets(db.Model):
     aktco8date = db.Column(db.Date)
     aktco41mode = db.Column(db.Integer)
     aktco42mode = db.Column(db.Integer)
-    lowcourtcode = db.Column(db.Integer)
+    lowcourtcode = db.Column(db.String(8))
     serviceprovider = db.Column(db.Integer)
     serviceproviderdate = db.Column(db.Date)
     location = db.Column(db.Integer)

@@ -1,45 +1,91 @@
 {% extends "base.html" %}
 {% block content %}
     <form method="post">
-        Редактировать заявку:
-        <input type="number" name="hotlineticket" value="{{ticket.hotlineticket }}"><br>
-        Акт СО-7
-        <select name="aktco7mode">
+        Редактировать заявку:{{ticket.hotlineticket }}<br>
+
+        Акт СО-7:<select name="aktco7mode">
             {% for mode in listmode %}
-                <option value="{{ mode.val }}">{{ mode.name }}</option>
+                {% if mode.val == ticket.aktco7mode  %}
+                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                {% else %}
+                    <option value="{{ mode.val }}">{{ mode.name }}</option>
+                {% endif %}
             {% endfor %}
         </select>
         <input type="date" name="aktco7date" value="{{ticket.aktco7date }}">
-        Акт СО-4.1
-        <select name="aktco41mode">
+
+        Акт СО-4.1:<select name="aktco41mode">
             {% for mode in listmode %}
-                <option value="{{ mode.val }}">{{ mode.name }}</option>
+                {% if mode.val == ticket.aktco41mode  %}
+                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                {% else %}
+                    <option value="{{ mode.val }}">{{ mode.name }}</option>
+                {% endif %}
             {% endfor %}
         </select>
         <br>
-        Акт СО-8
-        <select name="aktco8mode">
+
+        Акт СО-8:<select name="aktco8mode">
             {% for mode in listmode %}
-                <option value="{{ mode.val }}">{{ mode.name }}</option>
+                 {% if mode.val == ticket.aktco8mode  %}
+                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                {% else %}
+                    <option value="{{ mode.val }}">{{ mode.name }}</option>
+                {% endif %}
+
             {% endfor %}
         </select>
         <input type="date" name="aktco8date" value="{{ticket.aktco8date }}">
-        Акт СО-4.2
-        <select name="aktco42mode">
+
+        Акт СО-4.2:<select name="aktco42mode">
             {% for mode in listmode %}
-                <option value="{{ mode.val }}">{{ mode.name }}</option>
+                {% if mode.val == ticket.aktco42mode  %}
+                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                {% else %}
+                    <option value="{{ mode.val }}">{{ mode.name }}</option>
+                {% endif %}
             {% endfor %}
         </select>
          <br>
-        <input type="date" name="serviceproviderdate" value="{{ticket.serviceproviderdate }}">
-        <input type="date" name="locationdate" value="{{ticket.locationdate }}">
-        <input type="text" name="name" value="{{ticket.name }}">
-        <input type="text" name="inventnumder" value="{{ticket.inventnumder }}">
-        <input type="text" name="serialnumber" value="{{ticket.serialnumber }}">
-        <input type="number" name="serviceticket" value="{{ticket.serviceticket }}">
-        <input type="number" name="serviceakt" value="{{ticket.serviceakt }}">
-        <input type="number" name="serviceprice" value="{{ticket.serviceprice }}">
-        <input type="text" name="remark" value="{{ticket.remark }}">
+         Суд:<select name="lowcourtcode">
+            {% for low in listlow %}
+                {% if low.val == ticket.lowcourtcode %}
+                    <option value="{{ low.val }}" selected>{{ low.name }}</option>
+                {% else %}
+                    <option value="{{ low.val }}">{{ low.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <br>
+         Варианты ремонта:<select name="serviceprovider">
+            {% for prov in listprovider %}
+                {% if prov.val == ticket.serviceprovider  %}
+                    <option value="{{ prov.val }}" selected>{{ prov.name }}</option>
+                {% else %}
+                    <option value="{{ prov.val }}">{{ prov.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <br>
+         Местонахождение ПТС:<select name="location">
+            {% for loc in listlocation %}
+                {% if loc.val == ticket.location %}
+                    <option value="{{ loc.val }}" selected>{{ loc.name }}</option>
+                {% else %}
+                    <option value="{{ loc.val }}">{{ loc.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+
+        Наименование ПТС:<input type="text" name="name" value="{{ticket.name }}">
+        Инвентарный : {{ticket.inventnumder }}
+        Серийный : {{ticket.serialnumber }}
+        <br>
+        Номер заявки в СЦ:<input type="number" name="serviceticket" value="{{ticket.serviceticket }}">
+        Номер акта ТС ПТС:<input type="number" name="serviceakt" value="{{ticket.serviceakt }}">
+        Цена ремонта:<input type="text" name="serviceprice" value="{{ticket.serviceprice }}">
+        <br>
+        Примечание:<input type="text" name="remark" value="{{ticket.remark }}" disabled><br>
          <p><input type="submit" name="addticket" value="Редактировать">
     </form>
 {% endblock %}
