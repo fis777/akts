@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <table border="1px grey" width="120%">
+    <table border="1px grey" width="160%">
     <tr><th>№ заявки</th><th>№ заявки ГЛ</th>
         <th>СО-7</th><th>СО-7 изменен</th><th>дата СО-7</th><th>СО-8</th><th>СО-8 изменен</th><th>СО-8 дата</th>
         <th>СО-4.1</th><th>СО-4.2</th><th>Суд</th><th>Сервис</th><th>Дата</th><th>Где ПТС</th><th>Дата</th><th>Нименование ПТС</th>
         <th>Инвентарный</th><th>Серийный</th><th>Примечание</th></tr>
     {% for l in list %}
-        <tr> <td>{{ l.localticket }}</td>
+        <tr><td><a href="{{ url_for('edit', local = l.localticket) }}">{{ l.localticket }}</a></td>
             <td>{{ l.hotlineticket }}</td>
             <td>{{ l.aktco7modename }}</td>
             <td>{{ l.aktco7changedate }}</td>

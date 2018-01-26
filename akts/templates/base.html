@@ -7,7 +7,7 @@
 <body>
     <a href="{{ url_for('list') }}">Главная</a>
     <a href="{{ url_for('add') }}">Добавить заявку</a>
-    <a href="{{ url_for('getticket') }}">Редактировать заявку</a><p>
+    <a href="{{ url_for('seek') }}">Искать по инв №</a><p>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul class=flashes>

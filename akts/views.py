@@ -84,6 +84,51 @@ def getticket():
         return redirect(url_for('edit', local = localticket))
     return render_template("get_ticket_for_edit.html")
 
+@app.route('/seek',methods=['GET', 'POST'])
+def seek():
+    if request.method == 'POST':
+        inventnumder = request.form['inventnumder']
+        list = [{'localticket': x.localticket,
+                 'hotlineticket': x.hotlineticket,
+                 'aktco7mode': x.aktco7mode,
+                 'aktco7changedate': x.aktco7changedate,
+                 'aktco7date': x.aktco7date,
+                 'aktco8mode': x.aktco8mode,
+                 'aktco8changedate': x.aktco8changedate,
+                 'aktco8date': x.aktco8date,
+                 'aktco41mode': x.aktco41mode,
+                 'aktco42mode': x.aktco42mode,
+                 'lowcourtcode': x.lowcourtcode,
+                 'serviceprovider': x.serviceprovider,
+                 'serviceproviderdate': x.serviceproviderdate,
+                 'location': x.location,
+                 'locationdate': x.locationdate,
+                 'name': x.name,
+                 'inventnumder': x.inventnumder,
+                 'serialnumber': x.serialnumber,
+                 'serviceticket': x.serviceticket,
+                 'serviceakt': x.serviceakt,
+                 'serviceprice': x.serviceprice,
+                 'remark': x.remark} for x in models.Tickets.query.filter(models.Tickets.inventnumder.contains(inventnumder)).all()]
+        for item in list:
+            currentAct7Mode = models.ActMode.query.get(item['aktco7mode'])
+            currntAct8Mode = models.ActMode.query.get(item['aktco8mode'])
+            currntAct41Mode = models.ActMode.query.get(item['aktco41mode'])
+            currntAct42Mode = models.ActMode.query.get(item['aktco42mode'])
+            currentLocation = models.Location.query.get(item['location'])
+            currentServiceProvider = models.ServiceProvider.query.get(item['serviceprovider'])
+            currentLowCourt = models.LowCourt.query.filter_by(code=item['lowcourtcode']).first()
+            item['aktco7modename'] = currentAct7Mode.name
+            item['aktco8modename'] = currntAct8Mode.name
+            item['aktco41modename'] = currntAct41Mode.name
+            item['aktco42modename'] = currntAct42Mode.name
+            item['locationname'] = currentLocation.name
+            item['serviceprovidername'] = currentServiceProvider.name
+            item['lowcourtname'] = currentLowCourt.name
+        return render_template('list.html',list=list)
+    return render_template("seek.html")
+
+
 @app.route('/')
 @app.route('/list')
 def list():
