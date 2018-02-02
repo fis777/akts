@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <table>
+        <tr><th>Наименование</th><th>Инвентарный №</th><th>Серийный №</th><th>Номер заявки в СЦ</th><th>Номер акта ТС</th><th>Сумма по акту</th></tr>
+        {% for list in result %}
+            <tr><td>{{ list.name }} </td>
+                <td>{{ list.inventnumder }} </td>
+                <td>{{ list.serialnumber }} </td>
+                <td>{{ list.serviceticket }} </td>
+                <td>{{ list.serviceakt }} </td>
+                <td>{{ list.serviceprice }} </td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}

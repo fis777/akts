@@ -85,7 +85,7 @@
         Номер акта ТС ПТС:<input type="number" name="serviceakt" value="{{ticket.serviceakt }}">
         Цена ремонта:<input type="text" name="serviceprice" value="{{ticket.serviceprice }}">
         <br>
-        Примечание:<input type="text" name="remark" value="{{ticket.remark }}" disabled><br>
-         <p><input type="submit" name="addticket" value="Редактировать">
+        Примечание: {{ticket.remark }}<br><br>
+         <p><input type="submit" name="addticket" value="Сохранить измененния">
     </form>
 {% endblock %}

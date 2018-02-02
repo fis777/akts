@@ -5,17 +5,9 @@ from akts import getfromfb
 from flask import render_template, flash, redirect, url_for, request
 import datetime
 
-#строку которую возвращает HTML форма конвертируем в datetime.date
+#строку содержащую дату, которую возвращает HTML форма, конвертируем в datetime.date
 def strToDate(str):
     return datetime.date(int(str[0:4]),int(str[5:7]),int(str[8:10]))
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-@app.route('/index')
-def index():
-    return render_template("index.html")
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -153,7 +145,7 @@ def list():
              'serviceticket': x.serviceticket,
              'serviceakt': x.serviceakt,
              'serviceprice': x.serviceprice,
-             'remark': x.remark} for x in models.Tickets.query.all()]
+             'remark': x.remark} for x in models.Tickets.query.order_by('localticket').all()]
     for item in list:
         currentAct7Mode = models.ActMode.query.get(item['aktco7mode'])
         currntAct8Mode = models.ActMode.query.get(item['aktco8mode'])
@@ -170,5 +162,26 @@ def list():
         item['serviceprovidername'] = currentServiceProvider.name
         item['lowcourtname'] =  currentLowCourt.name
     return render_template('list.html',list=list)
+
+@app.route('/reportservice')
+def reportservice():
+    tickets = models.Tickets()
+    result = []  # Полный список заявок в СЦ для вывода в HTML
+    resultsum = []
+    resultsumall = 0
+    # Получаем номера всех заявок
+    slist = tickets.serviceticketList()
+    for item in slist:
+        # Получаем все акты тс по одной заявке
+        stlist = tickets.tiketsByTicket(item, 8)
+        summa = 0
+        for s in stlist:
+            result.append(s)
+            summa += s['serviceprice']
+        resultsumall += summa
+        resultsum.append({'serviceticket': item, 'summa': summa})
+    return render_template('reportservice.html',result = result, resultsum = resultsum, resultsumall = resultsumall)
+
+
 
 
