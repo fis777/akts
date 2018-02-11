@@ -11,4 +11,9 @@
                 <td>{{ list.serviceprice }} </td></tr>
         {% endfor %}
     </table>
+    {% for foo in resultsum %}
+        Итого по заявке № {{ foo.serviceticket }} - {{ foo.summa }} рублей. <br>
+    {% endfor %}
+    Итого по всем заявкам - {{ resultsumall }} рублей.
+
 {% endblock %}

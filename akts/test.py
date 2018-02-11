@@ -9,7 +9,11 @@ from akts.models import Tickets
 #query = Tickets.query.filter((Tickets.serviceticket == 1) and (Tickets.serviceprovider == 8)).order_by(
 #            Tickets.serviceakt).all()
 
+tickets = Tickets()
+res = tickets.allTickets()
+print(res)
 
+'''
 tickets = Tickets()
 result=[] # Полный список заявок в СЦ для вывода в HTML
 resultsum=[]
@@ -49,3 +53,4 @@ print(resultsumall)
 #for i in serviceticketlist:
 #    print(i['name'] + ' ' + i['inventnumder'] + ' ' + str(i['serviceticket']) +' ' + str(i['serviceakt']) +' ' + str(i['serviceprice']))
 
+'''

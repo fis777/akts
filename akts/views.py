@@ -9,6 +9,7 @@ import datetime
 def strToDate(str):
     return datetime.date(int(str[0:4]),int(str[5:7]),int(str[8:10]))
 
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
@@ -163,6 +164,14 @@ def list():
         item['lowcourtname'] =  currentLowCourt.name
     return render_template('list.html',list=list)
 
+
+@app.route('/lst')
+def lst():
+    tickets = models.Tickets()
+    lst = tickets.allTickets()
+    return render_template('lst.html',list = lst)
+
+
 @app.route('/reportservice')
 def reportservice():
     tickets = models.Tickets()
@@ -181,7 +190,5 @@ def reportservice():
         resultsumall += summa
         resultsum.append({'serviceticket': item, 'summa': summa})
     return render_template('reportservice.html',result = result, resultsum = resultsum, resultsumall = resultsumall)
-
-
 
 
