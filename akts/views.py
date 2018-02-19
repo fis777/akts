@@ -39,7 +39,7 @@ def add():
                                           serviceprice = fbTicket.ticket['serviceticket'],
                                           remark=fbTicket.ticket['remark']))
             db.session.commit()
-        return redirect(url_for('list'))
+        return redirect(url_for('lst'))
     return render_template("addticket.html")
 
 @app.route('/edit/<local>', methods=['GET', 'POST'])
@@ -67,7 +67,7 @@ def edit(local):
         ticket.serviceprice = float(request.form['serviceprice'])
 #        ticket.remark = request.form['remark']
         db.session.commit()
-        return redirect(url_for('list'))
+        return redirect(url_for('lst'))
     return render_template("edit.html",ticket = ticket,listmode = listmode,listlow = listlow,listprovider = listprovider,listlocation = listlocation)
 
 @app.route('/getticket', methods=['GET', 'POST'])
@@ -118,7 +118,7 @@ def seek():
             item['locationname'] = currentLocation.name
             item['serviceprovidername'] = currentServiceProvider.name
             item['lowcourtname'] = currentLowCourt.name
-        return render_template('list.html',list=list)
+        return render_template('list.html',list = list)
     return render_template("seek.html")
 
 
@@ -162,7 +162,7 @@ def list():
         item['locationname'] = currentLocation.name
         item['serviceprovidername'] = currentServiceProvider.name
         item['lowcourtname'] =  currentLowCourt.name
-    return render_template('list.html',list=list)
+    return render_template('list.html',list = list)
 
 
 @app.route('/lst')

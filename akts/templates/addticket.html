@@ -2,7 +2,7 @@
 {% block content %}
     <form method="post">
         Добаввить заявку:
-        <input type="text" name="ticket" value="{{request.form.ticket }}">
+        <input type="text" autofocus name="ticket" value="{{request.form.ticket }}">
         <input type="submit" name="addticket" value="Добавить">
     </form>
 {% endblock %}
