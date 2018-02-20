@@ -10,8 +10,15 @@ from akts.models import Tickets
 #            Tickets.serviceakt).all()
 
 tickets = Tickets()
-res = tickets.allTickets()
-print(res)
+
+result = tickets.byServiceprovider(6)
+report = result.__len__()
+itog = 0
+for foo in result:
+    if foo['aktco8mode'] != 1:
+        itog += 1
+print(result)
+print(itog)
 
 '''
 tickets = Tickets()

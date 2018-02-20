@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2> Общее количество ремонтов за 2018 год.</h2> <br>
+    <h4> По договору 751 Актион всего ремонтов: {{ report.action751 }} ,выполнено: {{ report.action751done }}. <br>
+    Без затрат всего ремонтов: {{ report.nomoney }} ,выполнено: {{ report.nomoneydone }}.<br>
+    C использованием ЗИП всего ремонтов: {{ report.zip }} ,выполнено: {{ report.zipdone }}.<br>
+    Не определен вариант ремонта: {{ report.nodefine }} </h4>
+{% endblock %}

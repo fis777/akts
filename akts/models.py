@@ -53,14 +53,26 @@ class Tickets(db.Model):
         return [x.serviceticket for x in query]
 
     def shortlist(query):
-        result = [{'name': x.name ,
-                  'inventnumder': x.inventnumder,
-                  'serialnumber': x.serialnumber,
-                  'serviceticket': x.serviceticket,
-                  'serviceakt': x.serviceakt,
-                  'hotlineticket': x.hotlineticket,
-                   'localticket': x.localticket,
-                  'serviceprice': x.serviceprice} for x in query]
+        result = [{'localticket': x.localticket,
+                   'hotlineticket': x.hotlineticket,
+                   'lowcourtcode': x.lowcourtcode,
+                   'serviceprovider': x.serviceprovider,
+                   'location': x.location,
+                   'name': x.name,
+                   'inventnumder': x.inventnumder,
+                   'serialnumber': x.serialnumber,
+                   'serviceticket': x.serviceticket,
+                   'serviceakt': x.serviceakt,
+                   'serviceprice': x.serviceprice,
+                   'warranty': x.warranty,
+                   'dead': x.dead} for x in query]
+        for item in result:
+            currentLocation = Location.query.get(item['location'])
+            currentServiceProvider = ServiceProvider.query.get(item['serviceprovider'])
+            currentLowCourt = LowCourt.query.filter_by(code=item['lowcourtcode']).first()
+            item['locationname'] = currentLocation.name
+            item['serviceprovidername'] = currentServiceProvider.name
+            item['lowcourtname'] = currentLowCourt.name
         return result
 
 
@@ -76,12 +88,17 @@ class Tickets(db.Model):
         return Tickets.fullListFromQuery(query)
 
     # По месту нахождения ПТС
-    def buLocation(self,location):
+    def byLocation(self,location):
         query = Tickets.query.filter(Tickets.location == location).order_by(Tickets.localticket).all()
         return Tickets.fullListFromQuery(query)
 
+    # По коду сервиса все ремонты.
+    def byServiceprovider(self,serviceprovider):
+        query = Tickets.query.filter(Tickets.serviceprovider == serviceprovider).order_by(Tickets.localticket).all()
+        return Tickets.fullListFromQuery(query)
+
     # Все заявки
-    def allTickets(selfб):
+    def allTickets(self):
         query = Tickets.query.order_by(Tickets.localticket).all()
         return Tickets.fullListFromQuery(query)
 

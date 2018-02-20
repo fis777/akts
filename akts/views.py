@@ -191,4 +191,71 @@ def reportservice():
         resultsum.append({'serviceticket': item, 'summa': summa})
     return render_template('reportservice.html',result = result, resultsum = resultsum, resultsumall = resultsumall)
 
+@app.route('/reportbyservice')
+def reportbyservice():
+    tickets = models.Tickets()
+    report = {}
+
+    #Актион 751
+    result = tickets.byServiceprovider(8)
+    report['action751'] = result.__len__()
+    itog = 0
+    for foo in result:
+        if foo['aktco8mode'] != 1:
+            itog += 1
+    report['action751done'] = itog
+
+    #Без денег
+    result = tickets.byServiceprovider(6)
+    report['nomoney'] = result.__len__()
+    itog = 0
+    for foo in result:
+        if foo['aktco8mode'] != 1:
+            itog += 1
+    report['nomoneydone'] = itog
+
+    # ЗИП 15
+    result = tickets.byServiceprovider(2)
+    report['zip'] = result.__len__()
+    itog = 0
+    for foo in result:
+        if foo['aktco8mode'] != 1:
+            itog += 1
+    report['zipdone'] = itog
+
+    # ЗИП 16
+    result = tickets.byServiceprovider(3)
+    report['zip'] += result.__len__()
+    itog = 0
+    for foo in result:
+        if foo['aktco8mode'] != 1:
+            itog += 1
+    report['zipdone'] += itog
+
+    # ЗИП 17
+    result = tickets.byServiceprovider(4)
+    report['zip'] += result.__len__()
+    itog = 0
+    for foo in result:
+        if foo['aktco8mode'] != 1:
+            itog += 1
+    report['zipdone'] += itog
+
+    # ЗИП 404
+    result = tickets.byServiceprovider(5)
+    report['zip'] += result.__len__()
+    itog = 0
+    for foo in result:
+        if foo['aktco8mode'] != 1:
+            itog += 1
+    report['zipdone'] += itog
+
+    #Без денег
+    result = tickets.byServiceprovider(1)
+    report['nodefine'] = result.__len__()
+
+    return render_template('byservice.html',report = report)
+
+
+
 
