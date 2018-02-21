@@ -1,7 +1,4 @@
-from akts import app
-from akts import models
-from akts import db
-from akts import getfromfb
+from akts import app,models,db,getfromfb
 from flask import render_template, flash, redirect, url_for, request
 import datetime
 
@@ -56,117 +53,23 @@ def edit(local):
         ticket.aktco8mode = request.form.get('aktco8mode')
         ticket.aktco8date = strToDate(request.form['aktco8date'])
         ticket.aktco42mode = request.form.get('aktco42mode')
-#        ticket.lowcourtcode = request.form.get('lowcourtcode')
         ticket.serviceprovider = request.form.get('serviceprovider')
         ticket.location = request.form.get('location')
         ticket.name = request.form['name']
-#        ticket.inventnumder = request.form['inventnumder']
-#        ticket.serialnumber = request.form['serialnumber']
         ticket.serviceticket = int(request.form['serviceticket'])
         ticket.serviceakt = int(request.form['serviceakt'])
         ticket.serviceprice = float(request.form['serviceprice'])
-#        ticket.remark = request.form['remark']
         db.session.commit()
         return redirect(url_for('lst'))
     return render_template("edit.html",ticket = ticket,listmode = listmode,listlow = listlow,listprovider = listprovider,listlocation = listlocation)
 
-@app.route('/getticket', methods=['GET', 'POST'])
-def getticket():
-    if request.method == 'POST':
-        localticket = request.form['localticket']
-        return redirect(url_for('edit', local = localticket))
-    return render_template("get_ticket_for_edit.html")
-
-@app.route('/seek',methods=['GET', 'POST'])
-def seek():
-    if request.method == 'POST':
-        inventnumder = request.form['inventnumder']
-        list = [{'localticket': x.localticket,
-                 'hotlineticket': x.hotlineticket,
-                 'aktco7mode': x.aktco7mode,
-                 'aktco7changedate': x.aktco7changedate,
-                 'aktco7date': x.aktco7date,
-                 'aktco8mode': x.aktco8mode,
-                 'aktco8changedate': x.aktco8changedate,
-                 'aktco8date': x.aktco8date,
-                 'aktco41mode': x.aktco41mode,
-                 'aktco42mode': x.aktco42mode,
-                 'lowcourtcode': x.lowcourtcode,
-                 'serviceprovider': x.serviceprovider,
-                 'serviceproviderdate': x.serviceproviderdate,
-                 'location': x.location,
-                 'locationdate': x.locationdate,
-                 'name': x.name,
-                 'inventnumder': x.inventnumder,
-                 'serialnumber': x.serialnumber,
-                 'serviceticket': x.serviceticket,
-                 'serviceakt': x.serviceakt,
-                 'serviceprice': x.serviceprice,
-                 'remark': x.remark} for x in models.Tickets.query.filter(models.Tickets.inventnumder.contains(inventnumder)).all()]
-        for item in list:
-            currentAct7Mode = models.ActMode.query.get(item['aktco7mode'])
-            currntAct8Mode = models.ActMode.query.get(item['aktco8mode'])
-            currntAct41Mode = models.ActMode.query.get(item['aktco41mode'])
-            currntAct42Mode = models.ActMode.query.get(item['aktco42mode'])
-            currentLocation = models.Location.query.get(item['location'])
-            currentServiceProvider = models.ServiceProvider.query.get(item['serviceprovider'])
-            currentLowCourt = models.LowCourt.query.filter_by(code=item['lowcourtcode']).first()
-            item['aktco7modename'] = currentAct7Mode.name
-            item['aktco8modename'] = currntAct8Mode.name
-            item['aktco41modename'] = currntAct41Mode.name
-            item['aktco42modename'] = currntAct42Mode.name
-            item['locationname'] = currentLocation.name
-            item['serviceprovidername'] = currentServiceProvider.name
-            item['lowcourtname'] = currentLowCourt.name
-        return render_template('list.html',list = list)
-    return render_template("seek.html")
-
-
-@app.route('/')
-@app.route('/list')
-def list():
-    list = [{'localticket' : x.localticket,
-             'hotlineticket': x.hotlineticket,
-             'aktco7mode': x.aktco7mode,
-             'aktco7changedate': x.aktco7changedate,
-             'aktco7date': x.aktco7date,
-             'aktco8mode': x.aktco8mode,
-             'aktco8changedate': x.aktco8changedate,
-             'aktco8date': x.aktco8date,
-             'aktco41mode': x.aktco41mode,
-             'aktco42mode': x.aktco42mode,
-             'lowcourtcode': x.lowcourtcode,
-             'serviceprovider': x.serviceprovider,
-             'serviceproviderdate': x.serviceproviderdate,
-             'location': x.location,
-             'locationdate': x.locationdate,
-             'name': x.name,
-             'inventnumder': x.inventnumder,
-             'serialnumber': x.serialnumber,
-             'serviceticket': x.serviceticket,
-             'serviceakt': x.serviceakt,
-             'serviceprice': x.serviceprice,
-             'remark': x.remark} for x in models.Tickets.query.order_by('localticket').all()]
-    for item in list:
-        currentAct7Mode = models.ActMode.query.get(item['aktco7mode'])
-        currntAct8Mode = models.ActMode.query.get(item['aktco8mode'])
-        currntAct41Mode = models.ActMode.query.get(item['aktco41mode'])
-        currntAct42Mode = models.ActMode.query.get(item['aktco42mode'])
-        currentLocation = models.Location.query.get(item['location'])
-        currentServiceProvider = models.ServiceProvider.query.get(item['serviceprovider'])
-        currentLowCourt = models.LowCourt.query.filter_by(code = item['lowcourtcode']).first()
-        item['aktco7modename'] = currentAct7Mode.name
-        item['aktco8modename'] = currntAct8Mode.name
-        item['aktco41modename'] = currntAct41Mode.name
-        item['aktco42modename'] = currntAct42Mode.name
-        item['locationname'] = currentLocation.name
-        item['serviceprovidername'] = currentServiceProvider.name
-        item['lowcourtname'] =  currentLowCourt.name
-    return render_template('list.html',list = list)
-
-
-@app.route('/lst')
+@app.route('/lst',methods=['GET', 'POST'])
 def lst():
+    if request.method == 'POST':
+        value = request.form['seek']
+        tickets = models.Tickets()
+        lst = tickets.seek(value)
+        return render_template('lst.html', list=lst)
     tickets = models.Tickets()
     lst = tickets.allTickets()
     return render_template('lst.html',list = lst)
@@ -195,65 +98,17 @@ def reportservice():
 def reportbyservice():
     tickets = models.Tickets()
     report = {}
-
     #Актион 751
-    result = tickets.byServiceprovider(8)
-    report['action751'] = result.__len__()
-    itog = 0
-    for foo in result:
-        if foo['aktco8mode'] != 1:
-            itog += 1
-    report['action751done'] = itog
-
+    report['action751'] = tickets.byServiceprovider(8).__len__()
+    report['action751done'] = tickets.byServiceproviderDone(8).__len__()
     #Без денег
-    result = tickets.byServiceprovider(6)
-    report['nomoney'] = result.__len__()
-    itog = 0
-    for foo in result:
-        if foo['aktco8mode'] != 1:
-            itog += 1
-    report['nomoneydone'] = itog
-
-    # ЗИП 15
-    result = tickets.byServiceprovider(2)
-    report['zip'] = result.__len__()
-    itog = 0
-    for foo in result:
-        if foo['aktco8mode'] != 1:
-            itog += 1
-    report['zipdone'] = itog
-
-    # ЗИП 16
-    result = tickets.byServiceprovider(3)
-    report['zip'] += result.__len__()
-    itog = 0
-    for foo in result:
-        if foo['aktco8mode'] != 1:
-            itog += 1
-    report['zipdone'] += itog
-
-    # ЗИП 17
-    result = tickets.byServiceprovider(4)
-    report['zip'] += result.__len__()
-    itog = 0
-    for foo in result:
-        if foo['aktco8mode'] != 1:
-            itog += 1
-    report['zipdone'] += itog
-
-    # ЗИП 404
-    result = tickets.byServiceprovider(5)
-    report['zip'] += result.__len__()
-    itog = 0
-    for foo in result:
-        if foo['aktco8mode'] != 1:
-            itog += 1
-    report['zipdone'] += itog
-
-    #Без денег
-    result = tickets.byServiceprovider(1)
-    report['nodefine'] = result.__len__()
-
+    report['nomoney'] = tickets.byServiceprovider(6).__len__()
+    report['nomoneydone'] = tickets.byServiceproviderDone(6).__len__()
+    # ЗИП
+    report['zip'] = tickets.bySpareParts().__len__()
+    report['zipdone'] = tickets.bySparePartsDone().__len__()
+    #Не определен способ ремонта
+    report['nodefine'] = tickets.byServiceprovider(1).__len__()
     return render_template('byservice.html',report = report)
 
 

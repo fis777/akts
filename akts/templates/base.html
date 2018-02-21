@@ -6,7 +6,7 @@
     <title>Ремонты</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Ремонты</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -19,14 +19,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('add') }}">Добавить заявку</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('seek') }}">Искать по инв. №</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkSort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Сортировка</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkSort">
+                    <a class="dropdown-item" href="#">По судам</a>
+                    <a class="dropdown-item" href="#">По вариантам ремонта</a>
+                    <a class="dropdown-item" href="#">По местонахождению ПТС</a>
+                    <a class="dropdown-item" href="#">Зарезервировано</a>
+                </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkReport" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Отчеты:
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkReport">
                     <a class="dropdown-item" href="{{ url_for('reportbyservice') }}">Отчет общий</a>
                     <a class="dropdown-item" href="{{ url_for('reportservice') }}">Отчет по ремонтам в СЦ</a>
                     <a class="dropdown-item" href="#">Гарантийные ремонты</a>
@@ -35,6 +41,10 @@
             </li>
             </ul>
         </div>
+      <form method="post" class="form-inline">
+        <input name="seek" class="form-control mr-sm-2" type="search" placeholder="Заявка или инв №" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+      </form>
     </nav>
 
     {% with messages = get_flashed_messages() %}

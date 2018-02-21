@@ -1,5 +1,6 @@
 import datetime
 from akts import db
+
 from akts.getfromfb import Fbticket
 
 class Location(db.Model):
@@ -95,6 +96,25 @@ class Tickets(db.Model):
     # По коду сервиса все ремонты.
     def byServiceprovider(self,serviceprovider):
         query = Tickets.query.filter(Tickets.serviceprovider == serviceprovider).order_by(Tickets.localticket).all()
+        return Tickets.fullListFromQuery(query)
+
+    # По коду сервиса все выполненные ремонты.
+    def byServiceproviderDone(self,serviceprovider):
+        query = Tickets.query.filter(Tickets.serviceprovider.like(serviceprovider) & Tickets.aktco8mode.notilike(1)).all()
+        return Tickets.fullListFromQuery(query)
+
+    # Все ремонты через ЗИП
+    def bySpareParts(self):
+        query = Tickets.query.filter(Tickets.serviceprovider.in_((2,3,4,5))).order_by(Tickets.localticket).all()
+        return Tickets.fullListFromQuery(query)
+    # Все ремонты через ЗИП выполненные
+    def bySparePartsDone(self):
+        query = Tickets.query.filter(Tickets.serviceprovider.in_((2,3,4,5)) & Tickets.aktco8mode.notilike(1)).order_by(Tickets.localticket).all()
+        return Tickets.fullListFromQuery(query)
+
+    #Поиск по инв номеру или номеру заявки в филиале
+    def seek(self,value):
+        query = Tickets.query.filter(Tickets.localticket.contains(value) | Tickets.inventnumder.contains(value)).all()
         return Tickets.fullListFromQuery(query)
 
     # Все заявки

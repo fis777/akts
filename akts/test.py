@@ -11,14 +11,11 @@ from akts.models import Tickets
 
 tickets = Tickets()
 
-result = tickets.byServiceprovider(6)
-report = result.__len__()
-itog = 0
+result = tickets.bySparePartsDone()
+print(result.__len__())
 for foo in result:
-    if foo['aktco8mode'] != 1:
-        itog += 1
-print(result)
-print(itog)
+    print(foo['aktco8mode'],foo['localticket'])
+
 
 '''
 tickets = Tickets()
