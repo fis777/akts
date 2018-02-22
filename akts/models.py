@@ -117,6 +117,13 @@ class Tickets(db.Model):
         query = Tickets.query.filter(Tickets.localticket.contains(value) | Tickets.inventnumder.contains(value)).all()
         return Tickets.fullListFromQuery(query)
 
+    def isLocalTicketExist(self,localticket):
+        query = Tickets.query.filter(Tickets.localticket.like(localticket)).first()
+        if query is None:
+            return False
+        else:
+            return True
+
     # Все заявки
     def allTickets(self):
         query = Tickets.query.order_by(Tickets.localticket).all()

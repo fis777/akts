@@ -11,6 +11,10 @@ def strToDate(str):
 def add():
     if request.method == 'POST':
         localticket = request.form['ticket']
+        #Проверяем есть ли уже такая заявка
+        ticket = models.Tickets()
+        if ticket.isLocalTicketExist(localticket):
+            return redirect(url_for('lst'))
         fbTicket = getfromfb.Fbticket()
         if fbTicket.getbylocalticket(localticket):
             db.session.add(models.Tickets(localticket=fbTicket.ticket['localticket'],

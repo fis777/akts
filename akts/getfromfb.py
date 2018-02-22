@@ -43,6 +43,8 @@ class Fbticket():
         self.institutionid = institutionid
         self.equipmentid = equipmentid
         self.name = name
+        self.servicerequestid = 0
+        self.problemdescription = ''
 
     def getbyhotlinenum(self,hotlinenumber):
         #Получаем данные из ис иац по номеру заявки на ГЛ
@@ -69,7 +71,7 @@ class Fbticket():
         #Получаем данные из ис иац по номеру заявки в филиале
         if self.con is not None:
             SELECT = 'select servicerequest.hotlineregnum, servicerequest.invnumber, servicerequest.sernumber, '
-            SELECT = SELECT + 'servicerequest.remark, servicerequest.institutionid,servicerequest.equipmentid'
+            SELECT = SELECT + 'servicerequest.remark, servicerequest.institutionid,servicerequest.equipmentid,servicerequest.id'
             SELECT = SELECT + ' from servicerequest'
             SELECT = SELECT + ' where (servicerequest.regnum=' + str(localtiket) +'and servicerequest.REGYEAR=2018)'
             cursor = self.con.cursor()
@@ -82,7 +84,32 @@ class Fbticket():
             self.ticket['remark'] = result[3]
             self.institutionid = result[4]
             self.equipmentid = result[5]
-            SELECT = "SELECT TERMINALEQUIPMENT.STATIONNAME FROM TERMINALEQUIPMENT WHERE  TERMINALEQUIPMENT.ID =" + str(self.equipmentid)
+            self.servicerequestid = result[6]
+
+            SELECT = 'SELECT SERVICEREQUESTFAULT.FAULTID FROM SERVICEREQUESTFAULT WHERE SERVICEREQUESTFAULT.REQUESTID =' + str(self.servicerequestid)
+            cursor = self.con.cursor()
+            cursor.execute(SELECT)
+            try:
+                if cursor.fetchone()[0] != 540001:
+                    # Код неисправности не аппаратная проблема
+                    print('Software problem. Not hardware')
+                    return False
+            except TypeError:
+                #Не заполнены необходимые поля в ИС ИАЦ
+                print('Not filled type of problem')
+                return False
+
+            SELECT = 'SELECT SERVICEREQUESTEQPMNTCHECK.PROBLEMDSCRPTN FROM SERVICEREQUESTEQPMNTCHECK WHERE SERVICEREQUESTEQPMNTCHECK.REQUESTID =' + str(self.servicerequestid)
+            cursor = self.con.cursor()
+            cursor.execute(SELECT)
+            try:
+                self.problemdescription = cursor.fetchone()[0]
+            except:
+                #Не заполнено поле в ИС ИАЦ Описание проявления неисправности
+                print('Not filled problem description')
+                return False
+
+            SELECT = "SELECT TERMINALEQUIPMENT.DTLEQTYPEIDSTR FROM TERMINALEQUIPMENT WHERE  TERMINALEQUIPMENT.ID =" + str(self.equipmentid)
             cursor = self.con.cursor()
             cursor.execute(SELECT)
             result = cursor.fetchone()
@@ -93,6 +120,7 @@ class Fbticket():
             result = cursor.fetchone()
             self.ticket['lowcourtcode'] = result[0]
             self.ticket['lowcourtname'] = result[1]
+
             return True
         else:
             print('No connect to databse')

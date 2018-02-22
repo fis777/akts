@@ -1,7 +1,20 @@
 #from akts import db
 from akts.models import Tickets
-#from akts.getfromfb import Fbticket
+from akts.getfromfb import Fbticket
 #import datetime
+
+#fbticket = Fbticket()
+#if fbticket.getbylocalticket(7):
+#    print(fbticket.problemdescription)
+
+tickets = Tickets()
+if tickets.isLocalTicketExist(20):
+    print('exist')
+else:
+    print('not exist')
+
+
+
 
 #def factory(aClass, *args):
 #    return aClass(*args)
@@ -9,13 +22,16 @@ from akts.models import Tickets
 #query = Tickets.query.filter((Tickets.serviceticket == 1) and (Tickets.serviceprovider == 8)).order_by(
 #            Tickets.serviceakt).all()
 
+
+
+'''
 tickets = Tickets()
 
 result = tickets.bySparePartsDone()
 print(result.__len__())
 for foo in result:
     print(foo['aktco8mode'],foo['localticket'])
-
+'''
 
 '''
 tickets = Tickets()
