@@ -1,4 +1,7 @@
-from akts import app,models,db,getfromfb
+from akts import getfromfb
+from .akts import db
+from .akts import app
+from akts import models
 from flask import render_template, flash, redirect, url_for, request
 import datetime
 
@@ -67,6 +70,7 @@ def edit(local):
         return redirect(url_for('lst'))
     return render_template("edit.html",ticket = ticket,listmode = listmode,listlow = listlow,listprovider = listprovider,listlocation = listlocation)
 
+@app.route('/',methods=['GET', 'POST'])
 @app.route('/lst',methods=['GET', 'POST'])
 def lst():
     if request.method == 'POST':

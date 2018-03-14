@@ -1,6 +1,5 @@
 import datetime
-from akts import db
-
+from .akts import db
 from akts.getfromfb import Fbticket
 
 class Location(db.Model):
