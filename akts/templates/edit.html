@@ -1,53 +1,73 @@
 {% extends "base.html" %}
 {% block content %}
     <form method="post">
-        Редактировать заявку:{{ticket.hotlineticket }}<br>
+        <div class="form-row">
+            <div class="form-group col-auto">
+                <label>Акт СО-7</label>
+                <select name="aktco7mode">
+                    {% for mode in listmode %}
+                        {% if mode.val == ticket.aktco7mode  %}
+                            <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                        {% else %}
+                            <option value="{{ mode.val }}">{{ mode.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-auto">
+                <label>Дата акта</label>
+                <input type="date" name="aktco7date" value="{{ticket.aktco7date }}">
+            </div>
+            <div class="form-group col-auto">
+                <label>Акт СО-4.1</label>
+                <select name="aktco41mode">
+                    {% for mode in listmode %}
+                        {% if mode.val == ticket.aktco41mode %}
+                            <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                        {% else %}
+                            <option value="{{ mode.val }}">{{ mode.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
 
-        Акт СО-7:<select name="aktco7mode">
-            {% for mode in listmode %}
-                {% if mode.val == ticket.aktco7mode  %}
-                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
-                {% else %}
-                    <option value="{{ mode.val }}">{{ mode.name }}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <input type="date" name="aktco7date" value="{{ticket.aktco7date }}">
+        <div class="form-row">
+            <div class="form-group col-auto">
+                <label>Акт СО-8:</label>
+                <select name="aktco8mode">
+                    {% for mode in listmode %}
+                        {% if mode.val == ticket.aktco8mode %}
+                            <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                        {% else %}
+                            <option value="{{ mode.val }}">{{ mode.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-auto">
+                <label>Дата акта</label>
+                <input type="date" name="aktco8date" value="{{ ticket.aktco8date }}">
+            </div>
+            <div class="form-group col-auto">
+                <label>Акт СО-4.2</label>
+                <select name="aktco42mode">
+                    {% for mode in listmode %}
+                        {% if mode.val == ticket.aktco42mode %}
+                            <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
+                        {% else %}
+                            <option value="{{ mode.val }}">{{ mode.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
 
-        Акт СО-4.1:<select name="aktco41mode">
-            {% for mode in listmode %}
-                {% if mode.val == ticket.aktco41mode  %}
-                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
-                {% else %}
-                    <option value="{{ mode.val }}">{{ mode.name }}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <br>
+        </div>
 
-        Акт СО-8:<select name="aktco8mode">
-            {% for mode in listmode %}
-                 {% if mode.val == ticket.aktco8mode  %}
-                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
-                {% else %}
-                    <option value="{{ mode.val }}">{{ mode.name }}</option>
-                {% endif %}
-
-            {% endfor %}
-        </select>
-        <input type="date" name="aktco8date" value="{{ticket.aktco8date }}">
-
-        Акт СО-4.2:<select name="aktco42mode">
-            {% for mode in listmode %}
-                {% if mode.val == ticket.aktco42mode  %}
-                    <option value="{{ mode.val }}" selected>{{ mode.name }}</option>
-                {% else %}
-                    <option value="{{ mode.val }}">{{ mode.name }}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-         <br>
-         Суд:<select name="lowcourtcode">
+        <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="lowcourtcode">Объект актоматизации</label>
+            <select name="lowcourtcode" id="lowcourtcode">
             {% for low in listlow %}
                 {% if low.val == ticket.lowcourtcode %}
                     <option value="{{ low.val }}" selected>{{ low.name }}</option>
@@ -55,19 +75,11 @@
                     <option value="{{ low.val }}">{{ low.name }}</option>
                 {% endif %}
             {% endfor %}
-        </select>
-        <br>
-         Варианты ремонта:<select name="serviceprovider">
-            {% for prov in listprovider %}
-                {% if prov.val == ticket.serviceprovider  %}
-                    <option value="{{ prov.val }}" selected>{{ prov.name }}</option>
-                {% else %}
-                    <option value="{{ prov.val }}">{{ prov.name }}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <br>
-         Местонахождение ПТС:<select name="location">
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="location">Местонахождение ПТС</label>
+            <select name="location">
             {% for loc in listlocation %}
                 {% if loc.val == ticket.location %}
                     <option value="{{ loc.val }}" selected>{{ loc.name }}</option>
@@ -75,17 +87,59 @@
                     <option value="{{ loc.val }}">{{ loc.name }}</option>
                 {% endif %}
             {% endfor %}
-        </select>
-        <br>
-        Наименование ПТС:<input type="text" name="name" value="{{ticket.name }}">
-        Инвентарный : {{ticket.inventnumder }}
-        Серийный : {{ticket.serialnumber }}
-        <br>
-        Номер заявки в СЦ:<input type="number" name="serviceticket" value="{{ticket.serviceticket }}">
-        Номер акта ТС ПТС:<input type="number" name="serviceakt" value="{{ticket.serviceakt }}">
-        Цена ремонта:<input type="text" name="serviceprice" value="{{ticket.serviceprice }}">
-        <br>
-        Примечание: {{ticket.remark }}<br><br>
-         <p><input type="submit" name="addticket" value="Сохранить изменения">
+            </select>
+        </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="inventnumder">Наименование ПТС</label>
+            <input type="text" class="form-control" id="inventnumder" name="name" value="{{ ticket.name }}">
+        </div>
+
+        <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="inventnumder">Инвентарный номер</label>
+            <input type="text" disabled class="form-control" id="inventnumder" name="inventnumder" value="{{ ticket.inventnumder }}">
+        </div>
+        <div class="form-group col-md-3 ">
+            <label for="inventnumder">Серийный номер</label>
+            <input type="text" disabled class="form-control" id="serialnumber" name="serialnumber" value="{{ ticket.serialnumber }}">
+        </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>Номер заявки в СЦ:</label>
+                <input type="number" name="serviceticket" value="{{ticket.serviceticket }}">
+            </div>
+            <div class="form-group col-md-2">
+                <label>Номер акта ТС ПТС:</label>
+                <input type="number" name="serviceakt" value="{{ticket.serviceakt }}">
+            </div>
+            <div class="form-group col-md-2">
+                <label>Цена ремонта:</label>
+                <input type="number" name="serviceprice" value="{{ticket.serviceprice }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+         <div class="form-group col-md-3">
+            <label for="serviceprovider">Вариант ремонта</label>
+            <select name="serviceprovider" id="serviceprovider">
+            {% for prov in listprovider %}
+                {% if prov.val == ticket.serviceprovider %}
+                    <option value="{{ prov.val }}" selected>{{ prov.name }}</option>
+                {% else %}
+                    <option value="{{ prov.val }}">{{ prov.name }}</option>
+                {% endif %}
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-check col-md-2">
+            <input class="form-check-input" type="checkbox" value="" id="dead" name="dead">
+            <label class="form-check-label" for="dead">Вывод из эксплуатации</label>
+        </div>
+        </div>
+         <p><input class="btn btn-primary" type="submit" name="addticket" value="Сохранить изменения">
     </form>
 {% endblock %}

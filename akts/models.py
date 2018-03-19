@@ -43,7 +43,7 @@ class Tickets(db.Model):
     serviceakt = db.Column(db.Integer)
     serviceprice =  db.Column(db.Float)
     remark = db.Column(db.String(50))
-    warranty = db.Column(db.Boolean)
+    typeofequipment = db.Column(db.Integer)
     dead = db.Column(db.Boolean)
 
     #возвращает упорядоченный список номеров заявок в сц
