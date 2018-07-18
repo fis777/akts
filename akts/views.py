@@ -129,6 +129,23 @@ def otch_typeof():
   return render_template("otch_typeof.html",otch = otch)
 
 
+@app.route('/report_akt_priemki')
+def report_akt_priemki():
+    tikets = models.Tickets()
+    result = []
+    resultsum = []
+    resultsumall = 0
+    akts = tikets.by_akt_priemki()
+    for akt in akts:
+        tikets_list = tikets.tiketsByAktPriemki(akt, 8)
+        summa = 0
+        for item in tikets_list:
+            result.append(item)
+            summa += item['serviceprice']
+        resultsumall += summa
+        resultsum.append({'akt_priemki': akt, 'summa': summa})
+    return render_template('rep_by_akt_priemki.html', result=result, resultsum=resultsum, resultsumall=resultsumall)
+
 @app.route('/reportservice')
 def reportservice():
     tickets = models.Tickets()

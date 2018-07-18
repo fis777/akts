@@ -62,6 +62,7 @@ class Tickets(db.Model):
     remark = db.Column(db.String(50))
     typeofequipment = db.Column(db.Integer)
     dead = db.Column(db.Boolean)
+    akt_priemki = db.Column(db.Integer)
 
     # возвращает упорядоченный список номеров заявок в сц
     def serviceticketList(self):
@@ -70,6 +71,15 @@ class Tickets(db.Model):
             order_by(Tickets.serviceticket).\
             group_by(Tickets.serviceticket).all()
         return [x.serviceticket for x in query]
+
+        # возвращает упорядоченный список номеров актов премки
+    def by_akt_priemki(self):
+        query = Tickets.query.filter(Tickets.serviceprovider == 8).\
+            filter(Tickets.akt_priemki != 0).\
+            filter(Tickets.akt_priemki != None).\
+            order_by(Tickets.akt_priemki).\
+            group_by(Tickets.akt_priemki).all()
+        return [item.akt_priemki for item in query]
 
     def shortlist(query):
         result = [{'localticket': x.localticket,
@@ -97,6 +107,17 @@ class Tickets(db.Model):
     def tiketsByTicket(self, serviceticket, serviceprovider):
         query = Tickets.query.filter((Tickets.serviceticket == serviceticket) and (Tickets.serviceprovider == serviceprovider)).order_by(
             Tickets.serviceakt).all()
+        return Tickets.fullListFromQuery(query)
+
+    # Возвращает все заявки по номеру акта премки
+    def tiketsByAktPriemki(self, akt, serviceprovider):
+        query = Tickets.query.filter((Tickets.akt_priemki == akt) and (Tickets.serviceprovider == serviceprovider)).\
+            order_by(Tickets.akt_priemki).all()
+        return Tickets.fullListFromQuery(query)
+
+    def sumByAktPriemki(self, akt, serviceprovider):
+        query = Tickets.query.filter((Tickets.akt_priemki == akt) and (Tickets.serviceprovider == serviceprovider)).\
+            order_by(Tickets.akt_priemki).all()
         return Tickets.fullListFromQuery(query)
 
     # Выбор по конкретному суду
@@ -170,7 +191,8 @@ class Tickets(db.Model):
                  'serviceakt': x.serviceakt,
                  'serviceprice': x.serviceprice,
                  'remark': x.remark,
-                 'dead': x.dead} for x in query]
+                 'dead': x.dead,
+                 'akt_priemki': x.akt_priemki} for x in query]
         for item in result:
             currentAct7Mode = ActMode.query.get(item['aktco7mode'])
             currntAct8Mode = ActMode.query.get(item['aktco8mode'])
