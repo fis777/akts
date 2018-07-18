@@ -89,35 +89,35 @@ def ust():
         if tic.name.find("Источ") != -1:
             tic.typeofequipment = 2
         elif tic.name.find("ИБП") != -1:
-          tic.typeofequipment = 2
+            tic.typeofequipment = 2
         elif tic.name.find("1000-07") != -1:
-          tic.typeofequipment = 2
+            tic.typeofequipment = 2
         elif tic.name.find("ринтер") != -1:
-          tic.typeofequipment = 3
+            tic.typeofequipment = 3
         elif tic.name.find("канер") != -1:
-          tic.typeofequipment = 4
+            tic.typeofequipment = 4
         elif tic.name.find("МФУ") != -1:
-          tic.typeofequipment = 5
+            tic.typeofequipment = 5
         elif tic.name.find("1028") != -1:
-          tic.typeofequipment = 5
+            tic.typeofequipment = 5
         elif tic.name.find("опир") != -1:
-          tic.typeofequipment = 6
+            tic.typeofequipment = 6
         elif tic.name.find("КМА") != -1:
-          tic.typeofequipment = 6
+            tic.typeofequipment = 6
         elif tic.name.find("Факс") != -1:
-          tic.typeofequipment = 7
+            tic.typeofequipment = 7
         elif tic.name.find("блок") != -1:
-          tic.typeofequipment = 8
+            tic.typeofequipment = 8
         elif tic.name.find("иоск") != -1:
-          tic.typeofequipment = 10
+            tic.typeofequipment = 10
         elif tic.name.find("мутатор") != -1:
-          tic.typeofequipment = 12
+            tic.typeofequipment = 12
         elif tic.name.upper().find("INELT") != -1:
-          tic.typeofequipment = 2
+            tic.typeofequipment = 2
         elif tic.name.find("онитор") != -1:
-          tic.typeofequipment = 1
+            tic.typeofequipment = 1
         elif tic.name.find("аудио") != -1:
-          tic.typeofequipment = 11
+            tic.typeofequipment = 11
     db.session.commit()
     return render_template("addticket.html")
 
@@ -127,8 +127,6 @@ def otch_typeof():
   tic = models.Tickets()
   otch = [ {"cnt": tic.quantityofequipmenttype(x), "name": typeofeq.get_type(x)} for x in range(1,12)]
   return render_template("otch_typeof.html",otch = otch)
-
-
 
 
 @app.route('/reportservice')
@@ -148,7 +146,7 @@ def reportservice():
             summa += s['serviceprice']
         resultsumall += summa
         resultsum.append({'serviceticket': item, 'summa': summa})
-    return render_template('reportservice.html',result = result, resultsum = resultsum, resultsumall = resultsumall)
+    return render_template('reportservice.html', result=result, resultsum=resultsum, resultsumall=resultsumall)
 
 @app.route('/reportbyservice')
 def reportbyservice():
