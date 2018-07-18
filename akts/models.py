@@ -2,6 +2,23 @@ import datetime
 from .akts import db
 from akts.getfromfb import Fbticket
 
+class Typeofequipment(object):
+    types = {1:"Монитор",
+                2:"ИБП",
+                3:"Принтер",
+                4:"Сканер",
+                5:"МФУ",
+                6:"Копир",
+                7:"Факс",
+                8:"АРМ",
+                9:"Сервер",
+                10:"Киоск",
+                11:"АВФ",
+                12:"Сетевое"}
+    
+    def get_type(self,id):
+        return self.types[id]
+
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(50))
@@ -64,7 +81,6 @@ class Tickets(db.Model):
                    'serviceticket': x.serviceticket,
                    'serviceakt': x.serviceakt,
                    'serviceprice': x.serviceprice,
-                   'warranty': x.warranty,
                    'dead': x.dead} for x in query]
         for item in result:
             currentLocation = Location.query.get(item['location'])
@@ -99,7 +115,7 @@ class Tickets(db.Model):
 
     # По коду сервиса все выполненные ремонты.
     def byServiceproviderDone(self,serviceprovider):
-        query = Tickets.query.filter(Tickets.serviceprovider.like(serviceprovider) & Tickets.aktco8mode.notilike(1)).all()
+        query = Tickets.query.filter(Tickets.serviceprovider.like(serviceprovider) & Tickets.aktco8mode.notilike(1) & Tickets.aktco8mode.notilike(7)).all()
         return Tickets.fullListFromQuery(query)
 
     # Все ремонты через ЗИП
@@ -108,7 +124,7 @@ class Tickets(db.Model):
         return Tickets.fullListFromQuery(query)
     # Все ремонты через ЗИП выполненные
     def bySparePartsDone(self):
-        query = Tickets.query.filter(Tickets.serviceprovider.in_((2,3,4,5)) & Tickets.aktco8mode.notilike(1)).order_by(Tickets.localticket).all()
+        query = Tickets.query.filter(Tickets.serviceprovider.in_((2,3,4,5)) & Tickets.aktco8mode.notilike(1) & Tickets.aktco8mode.notilike(7)).order_by(Tickets.localticket).all()
         return Tickets.fullListFromQuery(query)
 
     #Поиск по инв номеру или номеру заявки в филиале
@@ -122,6 +138,9 @@ class Tickets(db.Model):
             return False
         else:
             return True
+    def quantityofequipmenttype(self,typeofeq):
+        query = Tickets.query.filter(Tickets.typeofequipment.like(typeofeq)  & Tickets.aktco8mode.notilike(1) & Tickets.aktco8mode.notilike(7)).count()
+        return query
 
     # Все заявки
     def allTickets(self):
@@ -150,7 +169,6 @@ class Tickets(db.Model):
                  'serviceakt': x.serviceakt,
                  'serviceprice': x.serviceprice,
                  'remark': x.remark,
-                 'warranty': x.warranty,
                  'dead': x.dead} for x in query]
         for item in result:
             currentAct7Mode = ActMode.query.get(item['aktco7mode'])
