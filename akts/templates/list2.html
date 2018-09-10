@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
     {% for l in list %}
-        <div style="width:100%">
-            <a class="pts" href="{{ url_for('edit', local = l.localticket) }}">{{ l.localticket }}</a>
-            <div class="pts">{{ l.lowcourtname }}</div>
-            <div class="pts">{{ l.name }}</div>
-            <div class="pts">{{ l.inventnumder }}</div>
-            <div class="pts">{{ l.serialnumber }}</div>
-            <div class="pts">{{ l.remark }}</div>
+        <div class="pts">
+            <a id="ticket" href="{{ url_for('edit', local = l.localticket) }}">{{ l.localticket }}</a>
+            <div id="court">{{ l.lowcourtname }}</div>
+            <div id="name">{{ l.name }}</div>
+            <div id="inv">{{ l.inventnumder }}</div>
+            <div id="serial">{{ l.serialnumber }}</div>
+            <div id="rem">{{ l.remark }}</div>
         </div>
     {% endfor %}
     </table>

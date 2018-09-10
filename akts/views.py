@@ -80,7 +80,7 @@ def lst():
         return render_template('lst.html', list=lst)
     tickets = models.Tickets()
     lst = tickets.allTickets()
-    return render_template('lst.html',list = lst)
+    return render_template('list2.html',list = lst)
 
 @app.route('/ust')
 def ust():
