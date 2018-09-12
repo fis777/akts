@@ -1,0 +1,37 @@
+.pts {
+    width: 100%;
+    background-color: silver;
+}
+.pts > div {
+    display: inline-block;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.pts:nth-child(even) {
+    background-color: darkgray;
+}
+.pts:nth-child(odd) {
+    background-color: lightgray;
+}
+
+.pts > #ticket {
+    width: 2%;
+    margin-left: 3%;
+}
+.pts > #court {
+    width: 18%;
+}
+.pts > #name {
+    width: 18%;
+}
+.pts > #inv {
+    width: 9%;
+}
+.pts > #serial {
+    width: 9%;
+}
+.pts > #rem {
+    width: 38%;
+}
