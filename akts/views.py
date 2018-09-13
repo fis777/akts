@@ -1,16 +1,18 @@
+import datetime
+from flask import render_template, redirect, url_for, request
 from akts import getfromfb
+from akts import models
 from .akts import db
 from .akts import app
-from akts import models
-from flask import render_template, flash, redirect, url_for, request
-import datetime
+
 
 #строку содержащую дату, которую возвращает HTML форма, конвертируем в datetime.date
-def strToDate(str):
-    return datetime.date(int(str[0:4]),int(str[5:7]),int(str[8:10]))
+def strToDate(st):
+    return datetime.date(int(st[0:4]), int(st[5:7]), int(st[8:10]))
 
 
 @app.route('/add', methods=['GET', 'POST'])
+#добавляем заявку из ИС ИАЦ
 def add():
     if request.method == 'POST':
         localticket = request.form['ticket']
@@ -23,9 +25,9 @@ def add():
             db.session.add(models.Tickets(localticket=fbTicket.ticket['localticket'],
                                           hotlineticket=fbTicket.ticket['hotlineticket'],
                                           aktco7mode=fbTicket.ticket['aktco7mode'],
-                                          aktco7changedate = fbTicket.ticket['aktco7changedate'],
-                                          aktco7date = fbTicket.ticket['aktco7date'],
-                                          aktco8mode = fbTicket.ticket['aktco8mode'],
+                                          aktco7changedate=fbTicket.ticket['aktco7changedate'],
+                                          aktco7date=fbTicket.ticket['aktco7date'],
+                                          aktco8mode=fbTicket.ticket['aktco8mode'],
                                           aktco8changedate = fbTicket.ticket['aktco8changedate'],
                                           aktco8date = fbTicket.ticket['aktco8date'],
                                           aktco41mode = fbTicket.ticket['aktco41mode'],
@@ -77,7 +79,7 @@ def lst():
         value = request.form['seek']
         tickets = models.Tickets()
         lst = tickets.seek(value)
-        return render_template('lst.html', list=lst)
+        return render_template('lst2.html', list=lst)
     tickets = models.Tickets()
     lst = tickets.allTickets()
     return render_template('list2.html',list = lst)
@@ -123,10 +125,10 @@ def ust():
 
 @app.route('/otch_typeof')
 def otch_typeof():
-  typeofeq = models.Typeofequipment()
-  tic = models.Tickets()
-  otch = [ {"cnt": tic.quantityofequipmenttype(x), "name": typeofeq.get_type(x)} for x in range(1,12)]
-  return render_template("otch_typeof.html",otch = otch)
+    typeofeq = models.Typeofequipment()
+    tic = models.Tickets()
+    otch = [{"cnt": tic.quantityofequipmenttype(x), "name": typeofeq.get_type(x)} for x in range(1,12)]
+    return render_template("otch_typeof.html",otch = otch)
 
 
 @app.route('/report_akt_priemki')
@@ -181,7 +183,3 @@ def reportbyservice():
     #Не определен способ ремонта
     report['nodefine'] = tickets.byServiceprovider(1).__len__()
     return render_template('byservice.html',report = report)
-
-
-
-

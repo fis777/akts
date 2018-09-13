@@ -2,3 +2,6 @@
 __pycache__/
 backup/
 venv/
+akts/templates/css/style.css
+.vscode/settings.json
+.pylintrc
