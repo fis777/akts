@@ -1,4 +1,5 @@
 import datetime
+from sqlalchemy import desc
 from .akts import db
 from akts.getfromfb import Fbticket
 
@@ -166,7 +167,7 @@ class Tickets(db.Model):
 
     # Все заявки
     def allTickets(self):
-        query = Tickets.query.order_by(Tickets.localticket).all()
+        query = Tickets.query.order_by(Tickets.localticket.desc()).all()
         return Tickets.fullListFromQuery(query)
     
     # Из результата запроса получаем список справочников для передачи в HTML
