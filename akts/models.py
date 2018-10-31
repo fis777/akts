@@ -81,7 +81,7 @@ class Tickets(db.Model):
             group_by(Tickets.akt_priemki).all()
         return [item.akt_priemki for item in query]
 
-    def shortlist(query):
+    def shortlist(self, query):
         result = [{'localticket': x.localticket,
                    'hotlineticket': x.hotlineticket,
                    'lowcourtcode': x.lowcourtcode,
@@ -154,7 +154,7 @@ class Tickets(db.Model):
         query = Tickets.query.filter(Tickets.localticket.contains(value) | Tickets.inventnumder.contains(value)).all()
         return Tickets.fullListFromQuery(query)
 
-    def isLocalTicketExist(self,localticket):
+    def isLocalTicketExist(self, localticket):
         query = Tickets.query.filter(Tickets.localticket.like(localticket)).first()
         if query is None:
             return False
@@ -168,7 +168,7 @@ class Tickets(db.Model):
     def allTickets(self):
         query = Tickets.query.order_by(Tickets.localticket).all()
         return Tickets.fullListFromQuery(query)
-
+    
     # Из результата запроса получаем список справочников для передачи в HTML
     def fullListFromQuery(query):
         result = [{'localticket': x.localticket,
@@ -209,3 +209,7 @@ class Tickets(db.Model):
             item['serviceprovidername'] = currentServiceProvider.name
             item['lowcourtname'] = currentLowCourt.name
         return result
+
+def write_off(self):
+    ''' Возвращает заявки по которым было списание '''
+    pass

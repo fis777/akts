@@ -82,7 +82,7 @@ def lst():
         return render_template('lst2.html', list=lst)
     tickets = models.Tickets()
     lst = tickets.allTickets()
-    return render_template('list2.html',list = lst)
+    return render_template('list2.html', list = lst)
 
 @app.route('/ust')
 def ust():
@@ -183,3 +183,8 @@ def reportbyservice():
     #Не определен способ ремонта
     report['nodefine'] = tickets.byServiceprovider(1).__len__()
     return render_template('byservice.html',report = report)
+
+@app.route('/write-off')
+def writу_off():
+    ''' Отчет по списанию техники  '''
+    pass
