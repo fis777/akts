@@ -79,7 +79,7 @@ def lst():
         value = request.form['seek']
         tickets = models.Tickets()
         lst = tickets.seek(value)
-        return render_template('lst2.html', list=lst)
+        return render_template('list2.html', list=lst)
     tickets = models.Tickets()
     lst = tickets.allTickets()
     return render_template('list2.html', list = lst)
