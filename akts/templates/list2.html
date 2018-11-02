@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for l in list %}
+    {% for l in lst %}
         <div class="pts">
             <a id="ticket" href="{{url_for('edit', local = l.localticket)}}">{{ l.localticket }}</a>
             <div id="court">{{ l.lowcourtname }}</div>

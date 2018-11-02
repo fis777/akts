@@ -5,3 +5,4 @@ venv/
 akts/templates/css/style.css
 .vscode/settings.json
 .pylintrc
+test.db

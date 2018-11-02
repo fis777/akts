@@ -79,10 +79,10 @@ def lst():
         value = request.form['seek']
         tickets = models.Tickets()
         lst = tickets.seek(value)
-        return render_template('list2.html', list=lst)
+        return render_template('list2.html', lst=lst)
     tickets = models.Tickets()
     lst = tickets.allTickets()
-    return render_template('list2.html', list = lst)
+    return render_template('list2.html', lst = lst)
 
 @app.route('/ust')
 def ust():
@@ -129,6 +129,13 @@ def otch_typeof():
     tic = models.Tickets()
     otch = [{"cnt": tic.quantityofequipmenttype(x), "name": typeofeq.get_type(x)} for x in range(1,12)]
     return render_template("otch_typeof.html",otch = otch)
+
+@app.route('/repair_not_defined')
+def rep_type_of_repair_not_defined():
+    '''Отчет по  заявкам у которых тип ремонта - не определен'''
+    SERVICE_TYPE = 1 # Не определен вариант ремонта
+    result = models.Tickets.byServiceprovider(SERVICE_TYPE)
+    return render_template('list2.html', lst = result)
 
 
 @app.route('/report_akt_priemki')
